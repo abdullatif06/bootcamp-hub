@@ -19,7 +19,7 @@ function SocialIcons({ socials }: { socials?: Speaker["socials"] }) {
       {items.map(({ key, label, Icon }) => {
         const href = socials?.find((s) => s.label.toLowerCase().includes(key))?.url;
         const cls =
-          "grid h-9 w-9 place-items-center rounded-lg border border-lime/30 text-slate-300 transition hover:border-lime hover:bg-lime hover:text-navy";
+          "grid h-9 w-9 place-items-center rounded-lg border border-ink/20 text-ink/70 transition hover:border-ink hover:bg-ink hover:text-lime";
         return href ? (
           <a key={key} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className={cls}>
             <Icon className="h-4 w-4" />
@@ -34,44 +34,39 @@ function SocialIcons({ socials }: { socials?: Speaker["socials"] }) {
   );
 }
 
+/** Image-forward speaker card: large photo on top, info below — agency style. */
 function SpeakerCard({ s, badge }: { s: Speaker; badge?: string }) {
   return (
     <motion.article
-      whileHover={{ y: -5 }}
+      whileHover={{ y: -6 }}
       transition={{ type: "spring", stiffness: 400, damping: 22 }}
-      className="card-brutal group flex gap-4 p-4 sm:gap-5 sm:p-5"
+      className="group flex h-full flex-col overflow-hidden rounded-lg border-2 border-ink/10 bg-white"
     >
-      {/* photo — left */}
-      <div className="relative h-28 w-24 shrink-0 overflow-hidden rounded-xl sm:h-36 sm:w-32">
+      {/* photo */}
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-cream-soft">
         {s.photo ? (
           <Image
             src={s.photo}
             alt={s.name}
             fill
             className="object-cover object-top transition duration-500 group-hover:scale-105"
-            sizes="128px"
+            sizes="(max-width: 768px) 100vw, 33vw"
           />
         ) : (
-          <div className="grid h-full w-full place-items-center bg-navy-light text-4xl">🧑‍💻</div>
+          <div className="grid h-full w-full place-items-center text-5xl">🧑‍💻</div>
+        )}
+        {badge && (
+          <span className="absolute left-3 top-3 rounded-full bg-lime px-3 py-1 text-[10px] font-black uppercase tracking-wide text-ink">
+            {badge}
+          </span>
         )}
       </div>
 
-      {/* content — right */}
-      <div className="min-w-0 flex-1">
-        <div className="flex items-start justify-between gap-2">
-          <h3 className="font-display text-lg font-black leading-tight text-white sm:text-xl">
-            {s.name}
-          </h3>
-          {badge && (
-            <span className="shrink-0 rounded-full bg-lime/15 px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-lime">
-              {badge}
-            </span>
-          )}
-        </div>
-        <p className="mt-1 text-xs font-bold text-lime sm:text-sm">{s.role}</p>
-        <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-300">
-          {s.bio}
-        </p>
+      {/* content */}
+      <div className="flex min-w-0 flex-1 flex-col p-5">
+        <h3 className="font-display text-2xl leading-none text-ink">{s.name}</h3>
+        <p className="mt-2 text-xs font-bold uppercase tracking-wide text-royal">{s.role}</p>
+        <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-ink/60">{s.bio}</p>
         <SocialIcons socials={s.socials} />
       </div>
     </motion.article>
@@ -80,56 +75,66 @@ function SpeakerCard({ s, badge }: { s: Speaker; badge?: string }) {
 
 export function HomeSpeakers() {
   return (
-    <section className="relative mx-auto max-w-5xl px-4 py-14">
-      {/* decorative blobs */}
-      <div className="pointer-events-none absolute -left-20 top-10 h-52 w-52 animate-float-slow rounded-full bg-lime/10 blur-3xl" />
-      <div className="pointer-events-none absolute -right-16 bottom-0 h-56 w-56 animate-float rounded-[40%] bg-lime-deep/10 blur-3xl" />
+    <section className="section-cream relative overflow-hidden py-16 sm:py-20">
+      {/* decorative stars */}
+      <span className="star pointer-events-none absolute right-[5%] top-12 h-12 w-12 text-royal opacity-80 sm:h-16 sm:w-16" aria-hidden="true" />
+      <span className="star pointer-events-none absolute bottom-10 left-[4%] h-8 w-8 text-ink opacity-60" aria-hidden="true" />
 
-      {/* heading */}
-      <Reveal className="relative mb-10 text-center">
-        <span className="chip mb-3">🎤 The Lineup</span>
-        <h2 className="font-display text-4xl font-black leading-tight text-white sm:text-5xl">
-          Meet our <span className="text-lime">talented speakers</span>
-        </h2>
-        <p className="mx-auto mt-3 max-w-xl text-slate-300">
-          Founders, engineers, and AI leaders guiding you through your first build —
-          each bringing real experience, creativity, and passion.
-        </p>
-      </Reveal>
+      <div className="container-wide relative">
+        {/* heading — agency offset layout */}
+        <Reveal className="mb-12 max-w-2xl">
+          <div className="mb-4 flex items-center gap-3">
+            <span className="star h-4 w-4 bg-royal" aria-hidden="true" />
+            <span className="text-xs font-black uppercase tracking-[0.22em] text-royal">
+              The Lineup
+            </span>
+          </div>
+          <h2 className="headline text-[clamp(2.5rem,7vw,5.5rem)] text-ink">
+            Meet our <span className="text-royal">talented</span> speakers
+          </h2>
+          <p className="mt-4 max-w-xl text-base text-ink/60">
+            Founders, engineers, and AI leaders guiding you through your first build —
+            each bringing real experience, creativity, and passion.
+          </p>
+        </Reveal>
 
-      {/* 2-column card grid */}
-      <RevealGroup className="relative grid gap-5 sm:grid-cols-2" stagger={0.12}>
-        <RevealItem>
-          <SpeakerCard s={HOST} badge="Host" />
-        </RevealItem>
-        {SPEAKERS.map((s) => (
-          <RevealItem key={s.name}>
-            <SpeakerCard s={s} />
+        {/* card grid */}
+        <RevealGroup className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" stagger={0.1}>
+          <RevealItem>
+            <SpeakerCard s={HOST} badge="Host" />
           </RevealItem>
-        ))}
+          {SPEAKERS.map((s) => (
+            <RevealItem key={s.name}>
+              <SpeakerCard s={s} />
+            </RevealItem>
+          ))}
 
-        {/* mystery 3rd speaker, same card shape */}
-        <RevealItem>
-          <article className="group flex h-full items-center gap-4 rounded-[1.25rem] border-2 border-dashed border-lime/40 p-4 transition hover:border-lime sm:gap-5 sm:p-5">
-            <div className="grid h-28 w-24 shrink-0 place-items-center rounded-xl bg-navy-light/40 text-4xl sm:h-36 sm:w-32">
-              👀
-            </div>
-            <div className="min-w-0 flex-1">
-              <h3 className="font-display text-lg font-black text-white sm:text-xl">Speaker #3</h3>
-              <p className="mt-1 text-xs font-bold text-lime sm:text-sm">To be announced</p>
-              <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                A third speaker is joining the lineup soon. Stay tuned for the reveal.
-              </p>
-            </div>
-          </article>
-        </RevealItem>
-      </RevealGroup>
+          {/* mystery 3rd speaker */}
+          <RevealItem>
+            <article className="group flex h-full flex-col overflow-hidden rounded-lg border-2 border-dashed border-ink/30 transition hover:border-ink">
+              <div className="grid aspect-[4/5] w-full place-items-center bg-cream-soft text-6xl">
+                👀
+              </div>
+              <div className="flex flex-1 flex-col p-5">
+                <h3 className="font-display text-2xl leading-none text-ink">Speaker #3</h3>
+                <p className="mt-2 text-xs font-bold uppercase tracking-wide text-royal">
+                  To be announced
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-ink/50">
+                  A third speaker is joining the lineup soon. Stay tuned for the reveal.
+                </p>
+              </div>
+            </article>
+          </RevealItem>
+        </RevealGroup>
 
-      {/* link to full speakers page */}
-      <div className="relative mt-9 text-center">
-        <Link href="/speakers" className="btn-outline">
-          Full speaker details →
-        </Link>
+        {/* link to full speakers page */}
+        <div className="mt-12">
+          <Link href="/speakers" className="btn-dark">
+            Full speaker details
+            <span className="arrow-badge">→</span>
+          </Link>
+        </div>
       </div>
     </section>
   );

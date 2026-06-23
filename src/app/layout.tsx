@@ -1,22 +1,22 @@
 import type { Metadata, Viewport } from "next";
-import { Montserrat, Playfair_Display } from "next/font/google";
+import { Bebas_Neue, Inter } from "next/font/google";
 import "./globals.css";
 import { EVENT } from "@/lib/config";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import { SessionProvider } from "@/components/SessionProvider";
 
-const montserrat = Montserrat({
+const bebasNeue = Bebas_Neue({
   subsets: ["latin"],
-  variable: "--font-montserrat",
-  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-bebas",
+  weight: "400",
   display: "swap",
 });
 
-const playfair = Playfair_Display({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-playfair",
-  weight: ["400", "700", "800", "900"],
+  variable: "--font-inter",
+  weight: ["400", "500", "600", "700", "800", "900"],
   display: "swap",
 });
 
@@ -37,7 +37,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${montserrat.variable} ${playfair.variable}`}>
+    <html lang="en" className={`${bebasNeue.variable} ${inter.variable}`}>
       <body className="bg-maximal min-h-screen flex flex-col">
         <SessionProvider>
           <NavBar />

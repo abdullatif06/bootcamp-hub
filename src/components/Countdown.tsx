@@ -40,12 +40,12 @@ export function Countdown({ targetISO }: { targetISO: string }) {
       {cells.map((c) => (
         <div
           key={c.l}
-          className="flex min-w-[64px] flex-col items-center rounded-2xl border-2 border-lime/40 bg-navy-light/60 px-3 py-3 backdrop-blur sm:min-w-[80px] sm:px-4"
+          className="flex min-w-[64px] flex-col items-center rounded-xl border-2 border-ink bg-ink px-3 py-3 sm:min-w-[80px] sm:px-4"
         >
           <span className="relative h-9 overflow-hidden sm:h-12">
             <Digit value={c.v} />
           </span>
-          <span className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-400 sm:text-xs">
+          <span className="mt-1 text-[10px] font-bold uppercase tracking-widest text-white/50 sm:text-xs">
             {c.l}
           </span>
         </div>

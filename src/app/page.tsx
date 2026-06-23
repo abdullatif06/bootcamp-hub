@@ -1,9 +1,9 @@
 "use client";
 
-import { EVENT } from "@/lib/config";
 import { useEventState } from "@/lib/useEventState";
 import { useSession } from "@/components/SessionProvider";
 import { Hero } from "@/components/Hero";
+import { Marquee } from "@/components/Marquee";
 import { AgendaList } from "@/components/AgendaList";
 import { QuickCards } from "@/components/QuickCards";
 import { HomeSpeakers } from "@/components/HomeSpeakers";
@@ -12,60 +12,57 @@ import { Reveal } from "@/components/motion/Reveal";
 export default function HomePage() {
   const state = useEventState();
   const { session } = useSession();
-  const isLive = state?.mode === "live";
 
   return (
     <div className="overflow-hidden">
-      {/* ── HERO (GSAP entrance) ───────────────────────────── */}
+      {/* ── HERO (royal block, GSAP entrance) ──────────────── */}
       <Hero state={state} session={session} />
 
-      {/* ── QUICK ACCESS CARDS ─────────────────────────────── */}
-      <section className="mx-auto max-w-6xl px-4 py-10">
-        <Reveal>
-          <QuickCards />
-        </Reveal>
+      {/* ── MARQUEE TICKER (lime band) ─────────────────────────
+          On mobile the marquee is rendered INSIDE the hero (right under the
+          headshot), so hide this page-level one there to avoid a duplicate.
+          On desktop it's pulled up to straddle the hero→cream boundary so the
+          tilted band hides the hero's hard bottom edge and bridges the two
+          sections. The wrapper background is a hard split — royal on the top
+          half (continuing the hero) and cream on the bottom half (continuing
+          into the next section) — so the space ABOVE the tilted band reads as
+          the hero blue, not cream. relative z-30 keeps it above both. */}
+      <div className="relative z-30 -mt-10 hidden bg-gradient-to-b from-royal from-50% to-cream to-50% lg:-mt-16 lg:block 2xl:-mt-16">
+        <Marquee />
+      </div>
+
+      {/* ── QUICK ACCESS / SERVICE GRID (cream) ────────────── */}
+      <section className="section-cream dot-grid">
+        <div className="container-wide py-16 sm:py-20">
+          <Reveal>
+            <QuickCards />
+          </Reveal>
+        </div>
       </section>
 
-      {/* ── AGENDA SNAPSHOT ────────────────────────────────── */}
-      <section className="mx-auto max-w-6xl px-4 py-10">
-        <Reveal>
-          <div className="mb-6 flex items-end justify-between">
-            <div>
-              <span className="chip mb-2">The Plan</span>
-              <h2 className="font-display text-3xl font-black text-white sm:text-4xl">
+      {/* ── AGENDA (royal block) ───────────────────────────── */}
+      <section className="section-royal relative overflow-hidden">
+        <span className="star pointer-events-none absolute right-[5%] top-12 h-12 w-12 text-lime sm:h-16 sm:w-16" aria-hidden="true" />
+        <div className="container-wide relative py-16 sm:py-20">
+          <Reveal>
+            <div className="mb-10">
+              <div className="mb-4 flex items-center gap-3">
+                <span className="star h-4 w-4 bg-lime" aria-hidden="true" />
+                <span className="text-xs font-black uppercase tracking-[0.22em] text-lime">
+                  The Plan
+                </span>
+              </div>
+              <h2 className="headline text-[clamp(2.5rem,7vw,5.5rem)] text-white">
                 Today&apos;s <span className="text-lime">Agenda</span>
               </h2>
             </div>
-          </div>
-        </Reveal>
-        <AgendaList />
+          </Reveal>
+          <AgendaList />
+        </div>
       </section>
 
-      {/* ── SPEAKERS ───────────────────────────────────────── */}
+      {/* ── SPEAKERS (cream block) ─────────────────────────── */}
       <HomeSpeakers />
-
-      {/* ── REGISTER STRIP (pre mode) ──────────────────────── */}
-      {!isLive && (
-        <section className="mx-auto max-w-6xl px-4 py-10">
-          <Reveal direction="scale">
-            <div className="card-brutal relative overflow-hidden p-8 text-center sm:p-12">
-              <div className="absolute -right-12 -top-12 h-48 w-48 rounded-full bg-lime/20 blur-2xl" />
-              <div className="absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-lime-deep/10 blur-2xl" />
-              <div className="relative">
-                <h2 className="font-display text-4xl font-black text-white sm:text-5xl">
-                  Ready to <span className="text-lime">build?</span>
-                </h2>
-                <p className="mx-auto mt-3 max-w-md text-slate-300">
-                  {EVENT.priceLabel} at the door. Spots are limited — grab yours before July 2.
-                </p>
-                <a href={EVENT.formUrl} target="_blank" rel="noopener noreferrer" className="btn-lime mt-6 text-lg">
-                  Register now →
-                </a>
-              </div>
-            </div>
-          </Reveal>
-        </section>
-      )}
     </div>
   );
 }

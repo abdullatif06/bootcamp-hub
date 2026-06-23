@@ -17,10 +17,23 @@ const config: Config = {
           light: "#1e293b",
           soft: "#334155",
         },
+        // Agency-reference accents
+        royal: {
+          DEFAULT: "#2233ff",
+          deep: "#1320d6",
+        },
+        cream: {
+          DEFAULT: "#f4f1ea",
+          soft: "#e9e5da",
+        },
+        ink: {
+          DEFAULT: "#0b0e14",
+          soft: "#11151d",
+        },
       },
       fontFamily: {
-        display: ["var(--font-playfair)", "Georgia", "serif"],
-        sans: ["var(--font-montserrat)", "system-ui", "sans-serif"],
+        display: ["var(--font-bebas)", "Impact", "sans-serif"],
+        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
       },
       boxShadow: {
         glow: "0 0 40px rgba(222, 255, 154, 0.35)",
@@ -33,7 +46,10 @@ const config: Config = {
         float: "float 6s ease-in-out infinite",
         "float-slow": "float 9s ease-in-out infinite",
         "spin-slow": "spin 18s linear infinite",
+        "spin-slower": "spin 30s linear infinite",
         marquee: "marquee 22s linear infinite",
+        "marquee-fast": "marquee 16s linear infinite",
+        "marquee-rev": "marqueeRev 22s linear infinite",
         "pulse-glow": "pulseGlow 2.5s ease-in-out infinite",
       },
       keyframes: {
@@ -48,6 +64,10 @@ const config: Config = {
         marquee: {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },
+        },
+        marqueeRev: {
+          "0%": { transform: "translateX(-50%)" },
+          "100%": { transform: "translateX(0)" },
         },
         pulseGlow: {
           "0%, 100%": { boxShadow: "0 0 20px rgba(222,255,154,0.3)" },
