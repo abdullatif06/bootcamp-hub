@@ -43,12 +43,12 @@ export default function HostPage() {
       <div className="mx-auto max-w-md px-4 py-20 text-center">
         <div className="card-brutal p-10">
           <span className="text-5xl">🔌</span>
-          <p className="mt-4 font-display text-xl font-black text-white">Supabase not connected</p>
-          <p className="mt-1 text-sm text-slate-400">
-            Add <code className="text-lime">NEXT_PUBLIC_SUPABASE_URL</code> and{" "}
-            <code className="text-lime">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> to{" "}
-            <code className="text-lime">.env.local</code>, then run the schema in{" "}
-            <code className="text-lime">supabase/schema.sql</code>.
+          <p className="mt-4 font-display text-2xl leading-none text-ink">Supabase not connected</p>
+          <p className="mt-2 text-sm text-ink/60">
+            Add <code className="font-bold text-royal">NEXT_PUBLIC_SUPABASE_URL</code> and{" "}
+            <code className="font-bold text-royal">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> to{" "}
+            <code className="font-bold text-royal">.env.local</code>, then run the schema in{" "}
+            <code className="font-bold text-royal">supabase/schema.sql</code>.
           </p>
         </div>
       </div>
@@ -86,24 +86,29 @@ export default function HostPage() {
     <div className="mx-auto max-w-4xl px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <span className="chip mb-2">🎛️ Host Dashboard</span>
-          <h1 className="font-display text-3xl font-black text-white">Control Center</h1>
+          <div className="mb-2 flex items-center gap-3">
+            <span className="star h-4 w-4 bg-royal" aria-hidden="true" />
+            <span className="text-xs font-black uppercase tracking-[0.22em] text-royal">
+              Host Dashboard
+            </span>
+          </div>
+          <h1 className="headline text-[clamp(2.25rem,9vw,3.5rem)] text-ink">Control Center</h1>
         </div>
         <div className="text-right">
-          <p className="font-display text-3xl font-black text-lime">{count}</p>
-          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">checked in</p>
+          <p className="font-display text-4xl leading-none text-royal">{count}</p>
+          <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-ink/50">checked in</p>
         </div>
       </div>
 
       {/* Mode + toggles */}
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="card-brutal p-5">
-          <p className="mb-3 text-xs font-black uppercase tracking-widest text-slate-400">Home mode</p>
+          <p className="mb-3 text-xs font-black uppercase tracking-widest text-royal">Home mode</p>
           <div className="flex gap-2">
             <button
               onClick={() => setMode("pre")}
               className={`flex-1 rounded-xl border-2 py-3 font-black transition ${
-                mode === "pre" ? "border-lime bg-lime text-navy" : "border-white/15 text-slate-300"
+                mode === "pre" ? "border-ink bg-lime text-ink" : "border-ink/15 text-ink/50 hover:border-ink/40"
               }`}
             >
               Pre-event
@@ -111,7 +116,7 @@ export default function HostPage() {
             <button
               onClick={() => setMode("live")}
               className={`flex-1 rounded-xl border-2 py-3 font-black transition ${
-                mode === "live" ? "border-lime bg-lime text-navy" : "border-white/15 text-slate-300"
+                mode === "live" ? "border-ink bg-lime text-ink" : "border-ink/15 text-ink/50 hover:border-ink/40"
               }`}
             >
               🔴 Live
@@ -120,11 +125,11 @@ export default function HostPage() {
         </div>
 
         <div className="card-brutal flex flex-col justify-between p-5">
-          <p className="mb-3 text-xs font-black uppercase tracking-widest text-slate-400">Leaderboard</p>
+          <p className="mb-3 text-xs font-black uppercase tracking-widest text-royal">Leaderboard</p>
           <button
             onClick={toggleLeaderboard}
             className={`rounded-xl border-2 py-3 font-black transition ${
-              state?.leaderboard_visible ? "border-lime bg-lime text-navy" : "border-white/15 text-slate-300"
+              state?.leaderboard_visible ? "border-ink bg-lime text-ink" : "border-ink/15 text-ink/50 hover:border-ink/40"
             }`}
           >
             {state?.leaderboard_visible ? "👁️ Visible — tap to hide" : "🙈 Hidden — tap to reveal"}
@@ -134,7 +139,7 @@ export default function HostPage() {
 
       {/* Banner */}
       <div className="card-brutal mt-4 p-5">
-        <p className="mb-2 text-xs font-black uppercase tracking-widest text-slate-400">
+        <p className="mb-2 text-xs font-black uppercase tracking-widest text-royal">
           &quot;Happening now&quot; banner
         </p>
         <BannerEditor initial={state?.banner ?? ""} onSave={setBanner} />
@@ -142,15 +147,15 @@ export default function HostPage() {
 
       {/* Create poll */}
       <div className="mt-6">
-        <h2 className="mb-3 font-display text-xl font-black text-white">Create a poll</h2>
+        <h2 className="mb-3 font-display text-2xl leading-none text-ink">Create a poll</h2>
         <PollCreator onCreated={refresh} />
       </div>
 
       {/* Poll list */}
       <div className="mt-6">
-        <h2 className="mb-3 font-display text-xl font-black text-white">Your polls</h2>
+        <h2 className="mb-3 font-display text-2xl leading-none text-ink">Your polls</h2>
         {polls.length === 0 ? (
-          <p className="rounded-2xl border border-white/10 bg-navy-light/30 p-6 text-center text-sm text-slate-400">
+          <p className="rounded-2xl border-2 border-ink/10 bg-white p-6 text-center text-sm text-ink/60">
             No polls yet — create one above.
           </p>
         ) : (
@@ -159,18 +164,18 @@ export default function HostPage() {
               <li key={p.id} className="card-brutal flex flex-wrap items-center gap-3 p-4">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="chip !px-2 !py-0.5 !text-[10px]">{p.kind === "mcq" ? "MCQ" : "Text"}</span>
-                    {p.status === "open" && <span className="text-xs font-bold text-lime">● LIVE</span>}
-                    {p.status === "closed" && <span className="text-xs font-bold text-slate-500">closed</span>}
+                    <span className="rounded-full bg-royal px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-white">{p.kind === "mcq" ? "MCQ" : "Text"}</span>
+                    {p.status === "open" && <span className="text-xs font-black uppercase text-royal">● LIVE</span>}
+                    {p.status === "closed" && <span className="text-xs font-bold uppercase text-ink/40">closed</span>}
                   </div>
-                  <p className="mt-1 truncate font-bold text-white">{p.question}</p>
+                  <p className="mt-1 truncate font-bold text-ink">{p.question}</p>
                 </div>
                 {p.status === "open" ? (
-                  <button onClick={() => closePoll(p)} className="btn-outline !py-2 text-sm">
+                  <button onClick={() => closePoll(p)} className="btn-outline-dark !py-2 text-sm">
                     Close
                   </button>
                 ) : (
-                  <button onClick={() => pushPoll(p)} className="btn-lime !py-2 text-sm">
+                  <button onClick={() => pushPoll(p)} className="btn-dark !py-2 text-sm">
                     Push live →
                   </button>
                 )}
@@ -192,11 +197,11 @@ function BannerEditor({ initial, onSave }: { initial: string; onSave: (t: string
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="e.g. Prompt Engineering session starting now!"
-        className="flex-1 rounded-xl border-2 border-lime/40 bg-navy px-4 py-2.5 text-white outline-none focus:border-lime"
+        className="flex-1 rounded-xl border-2 border-ink/20 bg-cream px-4 py-2.5 text-ink outline-none placeholder:text-ink/30 focus:border-royal"
       />
-      <button onClick={() => onSave(text)} className="btn-lime !py-2 text-sm">Set</button>
+      <button onClick={() => onSave(text)} className="btn-dark !py-2 text-sm">Set</button>
       {initial && (
-        <button onClick={() => onSave("")} className="btn-outline !py-2 text-sm">Clear</button>
+        <button onClick={() => onSave("")} className="btn-outline-dark !py-2 text-sm">Clear</button>
       )}
     </div>
   );
@@ -238,7 +243,7 @@ function PollCreator({ onCreated }: { onCreated: () => void }) {
             key={k}
             onClick={() => setKind(k)}
             className={`flex-1 rounded-xl border-2 py-2.5 text-sm font-black transition ${
-              kind === k ? "border-lime bg-lime text-navy" : "border-white/15 text-slate-300"
+              kind === k ? "border-ink bg-lime text-ink" : "border-ink/15 text-ink/50 hover:border-ink/40"
             }`}
           >
             {k === "mcq" ? "Multiple choice" : "Open text"}
@@ -250,7 +255,7 @@ function PollCreator({ onCreated }: { onCreated: () => void }) {
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
         placeholder="Your question…"
-        className="w-full rounded-xl border-2 border-lime/40 bg-navy px-4 py-3 text-white outline-none focus:border-lime"
+        className="w-full rounded-xl border-2 border-ink/20 bg-cream px-4 py-3 text-ink outline-none placeholder:text-ink/30 focus:border-royal"
         required
       />
 
@@ -263,7 +268,7 @@ function PollCreator({ onCreated }: { onCreated: () => void }) {
                 onClick={() => setCorrect(i)}
                 title="Mark correct"
                 className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg border-2 text-sm font-black transition ${
-                  correct === i ? "border-lime bg-lime text-navy" : "border-white/15 text-slate-400"
+                  correct === i ? "border-ink bg-lime text-ink" : "border-ink/15 text-ink/40 hover:border-ink/40"
                 }`}
               >
                 {correct === i ? "✓" : String.fromCharCode(65 + i)}
@@ -276,24 +281,24 @@ function PollCreator({ onCreated }: { onCreated: () => void }) {
                   setOptions(next);
                 }}
                 placeholder={`Option ${String.fromCharCode(65 + i)}`}
-                className="flex-1 rounded-xl border-2 border-white/15 bg-navy px-3 py-2.5 text-white outline-none focus:border-lime"
+                className="flex-1 rounded-xl border-2 border-ink/15 bg-cream px-3 py-2.5 text-ink outline-none placeholder:text-ink/30 focus:border-royal"
               />
             </div>
           ))}
-          <p className="text-xs text-slate-500">Tap the letter to mark the correct answer (✓).</p>
+          <p className="text-xs text-ink/40">Tap the letter to mark the correct answer (✓).</p>
         </div>
       )}
 
       <div className="flex items-center gap-3">
-        <label className="text-sm font-bold text-slate-300">Points</label>
+        <label className="text-sm font-bold text-ink/70">Points</label>
         <input
           type="number"
           min={1}
           value={points}
           onChange={(e) => setPoints(Number(e.target.value) || 0)}
-          className="w-24 rounded-xl border-2 border-white/15 bg-navy px-3 py-2 text-white outline-none focus:border-lime"
+          className="w-24 rounded-xl border-2 border-ink/15 bg-cream px-3 py-2 text-ink outline-none focus:border-royal"
         />
-        <button type="submit" disabled={busy} className="btn-lime ml-auto disabled:opacity-60">
+        <button type="submit" disabled={busy} className="btn-dark ml-auto disabled:opacity-60">
           {busy ? "Saving…" : "Create poll"}
         </button>
       </div>

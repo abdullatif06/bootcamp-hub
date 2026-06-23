@@ -38,9 +38,14 @@ export default function LeaderboardPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
       <div className="mb-6 text-center">
-        <span className="chip mb-3">🏆 Standings</span>
-        <h1 className="font-display text-5xl font-black text-white sm:text-6xl">
-          Leader<span className="text-lime">board</span>
+        <div className="mb-3 flex items-center justify-center gap-3">
+          <span className="star h-4 w-4 bg-royal" aria-hidden="true" />
+          <span className="text-xs font-black uppercase tracking-[0.22em] text-royal">
+            Standings
+          </span>
+        </div>
+        <h1 className="headline text-[clamp(3rem,12vw,5.5rem)] text-ink">
+          Leader<span className="text-royal">board</span>
         </h1>
       </div>
 
@@ -60,17 +65,24 @@ export default function LeaderboardPage() {
               const heights = ["h-24", "h-32", "h-20"];
               const place = idx + 1;
               const medals = ["🥇", "🥈", "🥉"];
+              const podiumTone =
+                idx === 0
+                  ? "border-ink bg-lime"
+                  : idx === 1
+                  ? "border-ink bg-royal"
+                  : "border-ink bg-white";
+              const placeText = idx === 1 ? "text-white/60" : "text-ink/40";
               return (
                 <div key={a.id} className="flex flex-col items-center">
                   <span className="text-3xl">{medals[idx]}</span>
-                  <p className="mt-1 max-w-full truncate text-center text-sm font-bold text-white">
+                  <p className="mt-1 max-w-full truncate text-center text-sm font-bold text-ink">
                     {a.name.split(" ")[0]}
                   </p>
-                  <p className="font-display text-xl font-black text-lime">{a.score}</p>
+                  <p className="font-display text-2xl leading-none text-royal">{a.score}</p>
                   <div
-                    className={`mt-2 w-full rounded-t-xl border-2 border-lime/50 bg-lime/10 ${heights[idx]} grid place-items-end justify-center pb-1`}
+                    className={`mt-2 w-full rounded-t-xl border-2 ${podiumTone} ${heights[idx]} grid place-items-end justify-center pb-1`}
                   >
-                    <span className="font-display text-2xl font-black text-lime/70">#{place}</span>
+                    <span className={`font-display text-2xl ${placeText}`}>#{place}</span>
                   </div>
                 </div>
               );
@@ -91,17 +103,17 @@ export default function LeaderboardPage() {
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ type: "spring", stiffness: 500, damping: 35 }}
                     className={`flex items-center gap-3 rounded-2xl border-2 px-4 py-3 ${
-                      mine ? "border-lime bg-lime/10 shadow-glow-sm" : "border-white/10 bg-navy-light/40"
+                      mine ? "border-royal bg-royal/5" : "border-ink/10 bg-white"
                     }`}
                   >
-                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-navy/60 font-display font-black text-lime">
+                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-cream-soft font-display text-lg text-ink">
                       {i + 1}
                     </span>
-                    <span className="min-w-0 flex-1 truncate font-bold text-white">
+                    <span className="min-w-0 flex-1 truncate font-bold text-ink">
                       {a.name}
-                      {mine && <span className="ml-2 text-xs font-bold text-lime">(you)</span>}
+                      {mine && <span className="ml-2 text-xs font-bold text-royal">(you)</span>}
                     </span>
-                    <span className="font-display text-xl font-black text-lime tabular-nums">
+                    <span className="font-display text-2xl text-royal tabular-nums">
                       <AnimatedNumber value={a.score} />
                     </span>
                   </motion.li>
@@ -119,7 +131,7 @@ function Hidden({ text, emoji }: { text: string; emoji: string }) {
   return (
     <div className="card-brutal grid place-items-center p-12 text-center">
       <span className="text-5xl">{emoji}</span>
-      <p className="mt-4 max-w-sm text-slate-300">{text}</p>
+      <p className="mt-4 max-w-sm text-ink/60">{text}</p>
     </div>
   );
 }

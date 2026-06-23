@@ -151,7 +151,28 @@ body {
   color: var(--ink);
 }
 
-/* Dark outline variant for use on lime/cream sections */
+/* Ink outline variant for use on lime/cream/white sections */
+.btn-outline-dark {
+  background: transparent;
+  color: var(--ink);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  border: 2px solid var(--ink);
+  border-radius: 9999px;
+  padding: 0.8rem 1.55rem;
+  transition: background 0.15s ease, color 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.btn-outline-dark:hover {
+  background: var(--ink);
+  color: #fff;
+}
+
+/* Dark filled variant for use on lime/cream sections */
 .btn-dark {
   background: var(--ink);
   color: #fff;

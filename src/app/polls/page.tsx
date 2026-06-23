@@ -111,13 +111,18 @@ export default function PollsPage() {
     <div className="mx-auto max-w-2xl px-4 py-10">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <span className="chip mb-2">⚡ Live Polls</span>
-          <h1 className="font-display text-3xl font-black text-white">Answer & Earn</h1>
+          <div className="mb-2 flex items-center gap-3">
+            <span className="star h-4 w-4 bg-royal" aria-hidden="true" />
+            <span className="text-xs font-black uppercase tracking-[0.22em] text-royal">
+              Live Polls
+            </span>
+          </div>
+          <h1 className="headline text-[clamp(2.25rem,9vw,3.5rem)] text-ink">Answer &amp; Earn</h1>
         </div>
-        <div className="flex items-center gap-1.5 text-xs font-bold text-slate-400">
+        <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wide text-ink/60">
           <span className="relative flex h-2.5 w-2.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime opacity-75" />
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-lime" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-royal opacity-75" />
+            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-royal" />
           </span>
           Live
         </div>
@@ -130,7 +135,7 @@ export default function PollsPage() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ type: "spring", stiffness: 400, damping: 22 }}
-            className="mb-4 rounded-xl border-2 border-lime bg-lime/10 px-4 py-3 text-center font-bold text-lime"
+            className="mb-4 rounded-xl border-2 border-ink bg-lime px-4 py-3 text-center font-black text-ink"
           >
             {flash}
           </motion.div>
@@ -140,13 +145,13 @@ export default function PollsPage() {
       {!poll || poll.status !== "open" ? (
         <div className="card-brutal grid place-items-center p-12 text-center">
           <span className="text-5xl">⏳</span>
-          <p className="mt-4 font-display text-xl font-black text-white">
+          <p className="mt-4 font-display text-2xl leading-none text-ink">
             No poll is live right now
           </p>
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-2 text-sm text-ink/60">
             Hang tight — the host will push the next question soon. Keep this page open.
           </p>
-          <a href={EVENT.meetUrl} target="_blank" rel="noopener noreferrer" className="btn-outline mt-5 text-sm">
+          <a href={EVENT.meetUrl} target="_blank" rel="noopener noreferrer" className="btn-outline-dark mt-5 text-sm">
             Open Google Meet
           </a>
         </div>
@@ -158,10 +163,10 @@ export default function PollsPage() {
           transition={{ type: "spring", stiffness: 300, damping: 26 }}
           className="card-brutal p-6"
         >
-          <p className="mb-1 text-xs font-bold uppercase tracking-widest text-slate-400">
+          <p className="mb-1 text-xs font-black uppercase tracking-widest text-royal">
             {poll.kind === "mcq" ? "Multiple choice" : "Open answer"} · {poll.points} pts
           </p>
-          <h2 className="font-display text-2xl font-black leading-tight text-white">
+          <h2 className="font-display text-3xl leading-none text-ink">
             {poll.question}
           </h2>
 
@@ -185,17 +190,17 @@ export default function PollsPage() {
                     className={`relative w-full overflow-hidden rounded-xl border-2 px-4 py-4 text-left font-bold transition-colors ${
                       answered
                         ? isCorrect
-                          ? "border-lime text-white"
+                          ? "border-royal text-ink"
                           : isMine
-                          ? "border-red-400/60 text-white"
-                          : "border-white/10 text-slate-300"
-                        : "border-lime/40 text-white hover:border-lime hover:bg-lime/5"
+                          ? "border-red-400 text-ink"
+                          : "border-ink/15 text-ink/60"
+                        : "border-ink/20 text-ink hover:border-royal hover:bg-royal/5"
                     } disabled:cursor-default`}
                   >
                     {/* result bar */}
                     {answered && (
                       <motion.span
-                        className={`absolute inset-y-0 left-0 -z-0 ${isCorrect ? "bg-lime/20" : "bg-white/5"}`}
+                        className={`absolute inset-y-0 left-0 -z-0 ${isCorrect ? "bg-royal/15" : "bg-ink/5"}`}
                         initial={{ width: 0 }}
                         animate={{ width: `${pct}%` }}
                         transition={{ duration: 0.6, ease: "easeOut" }}
@@ -203,12 +208,13 @@ export default function PollsPage() {
                     )}
                     <span className="relative z-10 flex items-center justify-between">
                       <span className="flex items-center gap-3">
-                        <span className="grid h-7 w-7 place-items-center rounded-lg bg-navy/60 text-sm">
+                        <span className="grid h-7 w-7 place-items-center rounded-lg bg-cream-soft text-sm text-ink">
                           {String.fromCharCode(65 + i)}
                         </span>
                         {opt}
                         {answered && isCorrect && (
                           <motion.span
+                            className="text-royal"
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
                             transition={{ type: "spring", stiffness: 500, damping: 15 }}
@@ -217,13 +223,13 @@ export default function PollsPage() {
                           </motion.span>
                         )}
                       </span>
-                      {answered && <span className="text-sm text-slate-400">{pct}%</span>}
+                      {answered && <span className="text-sm text-ink/50">{pct}%</span>}
                     </span>
                   </motion.button>
                 );
               })}
               {myVote && (
-                <p className="pt-1 text-center text-xs text-slate-500">{totalVotes} answer{totalVotes === 1 ? "" : "s"} in</p>
+                <p className="pt-1 text-center text-xs text-ink/40">{totalVotes} answer{totalVotes === 1 ? "" : "s"} in</p>
               )}
             </div>
           )}
@@ -232,9 +238,9 @@ export default function PollsPage() {
           {poll.kind === "text" && (
             <div className="mt-5">
               {myVote ? (
-                <div className="rounded-xl border-2 border-lime bg-lime/10 p-4">
-                  <p className="text-xs font-bold uppercase tracking-wide text-slate-400">Your answer</p>
-                  <p className="mt-1 font-semibold text-white">{myVote.text_answer}</p>
+                <div className="rounded-xl border-2 border-royal bg-royal/5 p-4">
+                  <p className="text-xs font-black uppercase tracking-wide text-royal">Your answer</p>
+                  <p className="mt-1 font-semibold text-ink">{myVote.text_answer}</p>
                 </div>
               ) : (
                 <form onSubmit={handleText} className="space-y-3">
@@ -243,10 +249,10 @@ export default function PollsPage() {
                     onChange={(e) => setTextAnswer(e.target.value)}
                     rows={3}
                     placeholder="Type your answer…"
-                    className="w-full rounded-xl border-2 border-lime/40 bg-navy px-4 py-3 text-white outline-none focus:border-lime"
+                    className="w-full rounded-xl border-2 border-ink/20 bg-cream px-4 py-3 text-ink outline-none placeholder:text-ink/30 focus:border-royal"
                     required
                   />
-                  <button type="submit" disabled={submitting} className="btn-lime w-full justify-center disabled:opacity-60">
+                  <button type="submit" disabled={submitting} className="btn-dark w-full justify-center disabled:opacity-60">
                     {submitting ? "Submitting…" : "Submit answer"}
                   </button>
                 </form>
@@ -256,7 +262,7 @@ export default function PollsPage() {
         </motion.div>
       )}
 
-      <Link href="/leaderboard" className="mt-6 block text-center text-sm font-bold text-slate-400 hover:text-lime">
+      <Link href="/leaderboard" className="mt-6 block text-center text-sm font-bold text-ink/50 transition hover:text-royal">
         Check the leaderboard →
       </Link>
     </div>
@@ -276,10 +282,13 @@ function Notice({
     <div className="mx-auto max-w-md px-4 py-20">
       <div className="card-brutal grid place-items-center p-10 text-center">
         <span className="text-5xl">🔒</span>
-        <p className="mt-4 font-display text-xl font-black text-white">{title}</p>
-        <p className="mt-1 text-sm text-slate-400">{body}</p>
+        <p className="mt-4 font-display text-2xl leading-none text-ink">{title}</p>
+        <p className="mt-2 text-sm text-ink/60">{body}</p>
         {cta && (
-          <Link href={cta.href} className="btn-lime mt-5">{cta.label}</Link>
+          <Link href={cta.href} className="btn-dark mt-5">
+            {cta.label}
+            <span className="arrow-badge">→</span>
+          </Link>
         )}
       </div>
     </div>

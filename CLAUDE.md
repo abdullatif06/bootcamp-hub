@@ -101,7 +101,7 @@ Full product spec lives in [CONCEPT.md](CONCEPT.md). This file tracks decisions,
 
 ### 2026-06-23 (later) — Bold-maximalist agency redesign
 
-Retheme of the **home page + shared chrome** to match an uploaded agency reference (royal-blue / lime / cream flat color blocks, oversized condensed type, tilted ticker). Scope was deliberately "home + chrome only" — inner pages (`/speakers`, `/polls`, `/leaderboard`, `/me`, `/host`, `/login`, `/resources`) still use the **old dark navy theme** and will visually clash; converting them is the main outstanding follow-up.
+Retheme of the **home page + shared chrome** to match an uploaded agency reference (royal-blue / lime / cream flat color blocks, oversized condensed type, tilted ticker). Scope at the time was deliberately "home + chrome only" — inner pages still used the old dark navy theme. **That follow-up is now done** (see the next entry).
 
 - **Fonts swapped** Montserrat/Playfair → **Bebas Neue** (oversized condensed display, all-caps) + **Inter** (body). `layout.tsx` + `tailwind.config.ts` (`--font-bebas`/`--font-inter`).
 - **Dark mode removed** — body base is now cream, not ink. New color utilities in `tailwind.config.ts`: `royal` (#2233ff), `cream` (#f4f1ea), `ink` (#0b0e14). New section helpers in `globals.css`: `.section-royal/.section-lime/.section-cream/.section-ink`, four-point `.star` motif, `.container-wide` (1600px, near edge-to-edge), agency button/card restyles.
@@ -110,6 +110,20 @@ Retheme of the **home page + shared chrome** to match an uploaded agency referen
 - **Sections recolored** — QuickCards (white/royal/lime service bento on cream), Agenda (royal block, numbered rows), HomeSpeakers (cream, image-forward cards), Footer (royal CTA + cream info), NavBar (cream bar, royal "B"), Countdown (ink cells).
 - **Responsive hero** — mobile-first ordering (headshot+headline fill the first screen → slider → stats → CTA → countdown), `clamp()`/`svh` sizing, head clears the headline (photo `pt-[14vw]` on mobile). LLM icons were added then **removed from mobile** per request. Desktop headshot+headline enlarged; slider overlap tuned to a small `-mt-16` so the photo is cut cleanly at the band (no jacket bleeding onto cream below).
 - **Gotcha — stale `.next` cache dropped new Tailwind colors.** After adding `royal`/`ink`/`cream`, the `bg-royal`/`border-ink`/etc. utilities silently failed to compile (navbar "B" + hamburger rendered unstyled) until `.next` was cleared and rebuilt. If new theme colors don't apply, `rm -rf .next` and rebuild.
+
+### 2026-06-23 (later still) — Inner pages converted to agency theme
+
+Finished the outstanding follow-up: converted **all 7 inner pages** off the old dark-navy theme onto the agency theme (cream/white surfaces, `ink` text, `royal` accents, `headline`/`font-display` headings, `.star` eyebrows). Home page + chrome were already done; this brings the whole app visually consistent.
+
+- **Pages converted:** `/login`, `/me`, `/speakers`, `/resources`, `/polls`, `/leaderboard`, `/host`.
+- **Systematic class translation:** `text-white`→`text-ink`, `text-slate-300/400/500`→`text-ink/60`–`/40`, `bg-navy` inputs→`bg-cream` with `border-ink/20` + `focus:border-royal`, `border-white/10`→`border-ink/10`, `text-lime` accents on light bg→`text-royal`, `chip` eyebrows→`.star` + `tracking-[0.22em]` royal label, blurred gradient blobs→flat `.star` motifs. Headings now use `headline`/`font-display` (Bebas, no `font-black`).
+- **New button utility** in `globals.css`: `.btn-outline-dark` (ink border/text, fills ink on hover) — the old `.btn-outline` is lime-on-transparent and is invisible on cream, so light-section secondary buttons use the new variant. Primary CTAs on light sections use `.btn-dark` + `.arrow-badge`.
+- **`/speakers`** rebuilt from dark horizontal cards → agency image-forward cards (photo-on-top, 3-col grid) matching `HomeSpeakers`, but bios stay un-clamped (detail page).
+- **`/polls`** MCQ result states re-keyed to light palette: correct=`border-royal`+`bg-royal/15` bar, wrong-mine=`border-red-400`, others=`border-ink/15`; letter badges `bg-cream-soft`. Flash banner now lime/ink.
+- **`/leaderboard`** podium blocks tinted per place (gold→lime, silver→royal, bronze→white), "you" row `border-royal bg-royal/5`.
+- **`/host`** toggle "active" state = `bg-lime` + `border-ink` (was `bg-lime text-navy`); inactive = `border-ink/15 text-ink/50`. All form inputs cream-themed.
+- Cleared `.next` before building (per the gotcha above, since new utility combos were added). `tsc --noEmit` clean; prod build green — all 12 routes compile.
+- **Remaining:** no inner pages left on the dark theme. `supabase/`-driven flows untouched (logic unchanged, styling only).
 
 ---
 
