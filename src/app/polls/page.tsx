@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 import { useSession } from "@/components/SessionProvider";
 import { useEventState } from "@/lib/useEventState";
 import { supabaseEnabled, getSupabase } from "@/lib/supabase";
@@ -122,11 +123,19 @@ export default function PollsPage() {
         </div>
       </div>
 
-      {flash && (
-        <div className="mb-4 rounded-xl border-2 border-lime bg-lime/10 px-4 py-3 text-center font-bold text-lime">
-          {flash}
-        </div>
-      )}
+      <AnimatePresence>
+        {flash && (
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 400, damping: 22 }}
+            className="mb-4 rounded-xl border-2 border-lime bg-lime/10 px-4 py-3 text-center font-bold text-lime"
+          >
+            {flash}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {!poll || poll.status !== "open" ? (
         <div className="card-brutal grid place-items-center p-12 text-center">
@@ -142,7 +151,13 @@ export default function PollsPage() {
           </a>
         </div>
       ) : (
-        <div className="card-brutal p-6">
+        <motion.div
+          key={poll.id}
+          initial={{ opacity: 0, y: 20, scale: 0.97 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ type: "spring", stiffness: 300, damping: 26 }}
+          className="card-brutal p-6"
+        >
           <p className="mb-1 text-xs font-bold uppercase tracking-widest text-slate-400">
             {poll.kind === "mcq" ? "Multiple choice" : "Open answer"} · {poll.points} pts
           </p>
@@ -160,11 +175,14 @@ export default function PollsPage() {
                 const isMine = myVote?.choice_index === i;
                 const isCorrect = poll.correct_index === i;
                 return (
-                  <button
+                  <motion.button
                     key={i}
                     disabled={answered || submitting}
                     onClick={() => handleMcq(i)}
-                    className={`relative w-full overflow-hidden rounded-xl border-2 px-4 py-4 text-left font-bold transition ${
+                    whileHover={!answered ? { scale: 1.02 } : undefined}
+                    whileTap={!answered ? { scale: 0.97 } : undefined}
+                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                    className={`relative w-full overflow-hidden rounded-xl border-2 px-4 py-4 text-left font-bold transition-colors ${
                       answered
                         ? isCorrect
                           ? "border-lime text-white"
@@ -176,9 +194,11 @@ export default function PollsPage() {
                   >
                     {/* result bar */}
                     {answered && (
-                      <span
+                      <motion.span
                         className={`absolute inset-y-0 left-0 -z-0 ${isCorrect ? "bg-lime/20" : "bg-white/5"}`}
-                        style={{ width: `${pct}%` }}
+                        initial={{ width: 0 }}
+                        animate={{ width: `${pct}%` }}
+                        transition={{ duration: 0.6, ease: "easeOut" }}
                       />
                     )}
                     <span className="relative z-10 flex items-center justify-between">
@@ -187,11 +207,19 @@ export default function PollsPage() {
                           {String.fromCharCode(65 + i)}
                         </span>
                         {opt}
-                        {answered && isCorrect && <span>✓</span>}
+                        {answered && isCorrect && (
+                          <motion.span
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                          >
+                            ✓
+                          </motion.span>
+                        )}
                       </span>
                       {answered && <span className="text-sm text-slate-400">{pct}%</span>}
                     </span>
-                  </button>
+                  </motion.button>
                 );
               })}
               {myVote && (
@@ -225,7 +253,7 @@ export default function PollsPage() {
               )}
             </div>
           )}
-        </div>
+        </motion.div>
       )}
 
       <Link href="/leaderboard" className="mt-6 block text-center text-sm font-bold text-slate-400 hover:text-lime">

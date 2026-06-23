@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useSession } from "@/components/SessionProvider";
 import { useEventState } from "@/lib/useEventState";
 import { getSupabase, supabaseEnabled } from "@/lib/supabase";
 import { fetchLeaderboard } from "@/lib/api";
+import { AnimatedNumber } from "@/components/motion/AnimatedNumber";
 import type { Attendee } from "@/lib/types";
 
 export default function LeaderboardPage() {
@@ -77,28 +79,35 @@ export default function LeaderboardPage() {
 
           {/* Full list */}
           <ol className="space-y-2">
-            {rows.map((a, i) => {
-              const mine = a.id === myId;
-              return (
-                <li
-                  key={a.id}
-                  className={`flex items-center gap-3 rounded-2xl border-2 px-4 py-3 ${
-                    mine ? "border-lime bg-lime/10 shadow-glow-sm" : "border-white/10 bg-navy-light/40"
-                  }`}
-                >
-                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-navy/60 font-display font-black text-lime">
-                    {i + 1}
-                  </span>
-                  <span className="min-w-0 flex-1 truncate font-bold text-white">
-                    {a.name}
-                    {mine && <span className="ml-2 text-xs font-bold text-lime">(you)</span>}
-                  </span>
-                  <span className="font-display text-xl font-black text-lime tabular-nums">
-                    {a.score}
-                  </span>
-                </li>
-              );
-            })}
+            <AnimatePresence initial={false}>
+              {rows.map((a, i) => {
+                const mine = a.id === myId;
+                return (
+                  <motion.li
+                    key={a.id}
+                    layout
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 35 }}
+                    className={`flex items-center gap-3 rounded-2xl border-2 px-4 py-3 ${
+                      mine ? "border-lime bg-lime/10 shadow-glow-sm" : "border-white/10 bg-navy-light/40"
+                    }`}
+                  >
+                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-navy/60 font-display font-black text-lime">
+                      {i + 1}
+                    </span>
+                    <span className="min-w-0 flex-1 truncate font-bold text-white">
+                      {a.name}
+                      {mine && <span className="ml-2 text-xs font-bold text-lime">(you)</span>}
+                    </span>
+                    <span className="font-display text-xl font-black text-lime tabular-nums">
+                      <AnimatedNumber value={a.score} />
+                    </span>
+                  </motion.li>
+                );
+              })}
+            </AnimatePresence>
           </ol>
         </>
       )}

@@ -95,7 +95,9 @@ Full product spec lives in [CONCEPT.md](CONCEPT.md). This file tracks decisions,
 - **Speakers section on landing page** — added `HomeSpeakers` component (horizontal cards: photo left, name/role/bio/socials right; host featured with badge; 3rd-speaker teaser). `/speakers` page updated to match the same layout (full bios, not clamped).
 - **Social icons** — `SocialIcon.tsx` with Instagram + LinkedIn glyphs (currentColor, scalable). Real links added for all 3 speakers in `config.ts`.
 - **Repo init + deploy prep** — initialized standalone git repo inside `Bootcamp-web/` (was previously tracked under the user home dir). Added `/images` to `.gitignore` (source originals; optimized copies live in `public/`). `.env.local` excluded so Supabase keys stay private.
-- **Next (user):** create GitHub repo `bootcamp-hub` (public), push, then deploy to Vercel with the 5 env vars.
+- **Deployed** — repo at github.com/abdullatif06/bootcamp-hub (public); live on Vercel with 6 env vars; Supabase + Google Sheet working in production.
+- **Animation pass (GSAP + Framer Motion)** — added `gsap`, `@gsap/react`, `framer-motion`. New primitives in `src/components/motion/`: `Reveal`/`RevealGroup`/`RevealItem` (scroll-reveal, reduced-motion aware) and `AnimatedNumber` (spring count-up + live updates). Hero extracted to `Hero.tsx` with a GSAP entrance timeline (clip-reveal headline, staggered CTAs, elastic shapes). Countdown digits flip via AnimatePresence. Live counters/scores animate. Micro-interactions: card hover lifts, poll-answer tap + result-bar fill, leaderboard `layout` reorder. All respect `prefers-reduced-motion`.
+- **Next.js bumped** 14.2.15 → 14.2.35 (latest safe 14.x). Remaining audit advisories (next/image disk cache, postcss) only patch in Next 16 (breaking) and don't apply to Vercel-hosted setup — deferred.
 
 ---
 

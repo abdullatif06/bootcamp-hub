@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 function diff(target: number) {
   const now = Date.now();
@@ -41,8 +42,8 @@ export function Countdown({ targetISO }: { targetISO: string }) {
           key={c.l}
           className="flex min-w-[64px] flex-col items-center rounded-2xl border-2 border-lime/40 bg-navy-light/60 px-3 py-3 backdrop-blur sm:min-w-[80px] sm:px-4"
         >
-          <span className="font-display text-3xl font-black tabular-nums text-lime sm:text-5xl">
-            {c.v === undefined ? "--" : String(c.v).padStart(2, "0")}
+          <span className="relative h-9 overflow-hidden sm:h-12">
+            <Digit value={c.v} />
           </span>
           <span className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-400 sm:text-xs">
             {c.l}
@@ -50,5 +51,31 @@ export function Countdown({ targetISO }: { targetISO: string }) {
         </div>
       ))}
     </div>
+  );
+}
+
+// Each digit-pair flips up when its value changes (slot-machine feel).
+function Digit({ value }: { value: number | undefined }) {
+  const reduce = useReducedMotion() ?? false;
+  const text = value === undefined ? "--" : String(value).padStart(2, "0");
+  const cls = "font-display text-3xl font-black tabular-nums text-lime sm:text-5xl";
+
+  if (reduce) {
+    return <span className={`block ${cls}`}>{text}</span>;
+  }
+
+  return (
+    <AnimatePresence mode="popLayout" initial={false}>
+      <motion.span
+        key={text}
+        className={`block ${cls}`}
+        initial={{ y: "100%", opacity: 0 }}
+        animate={{ y: "0%", opacity: 1 }}
+        exit={{ y: "-100%", opacity: 0 }}
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {text}
+      </motion.span>
+    </AnimatePresence>
   );
 }

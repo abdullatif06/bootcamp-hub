@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 import { getSupabase } from "@/lib/supabase";
 import { fetchAttendeeCount, fetchLeaderboard } from "@/lib/api";
+import { AnimatedNumber } from "@/components/motion/AnimatedNumber";
 import type { Attendee } from "@/lib/types";
 
 /** Live attendee count + top-3 leaderboard preview (Home above-the-fold). */
@@ -48,7 +50,9 @@ export function LiveStats({ leaderboardVisible }: { leaderboardVisible: boolean 
             Attendees in
           </span>
         </div>
-        <p className="mt-2 font-display text-5xl font-black text-lime tabular-nums">{count}</p>
+        <p className="mt-2 font-display text-5xl font-black text-lime tabular-nums">
+          <AnimatedNumber value={count} />
+        </p>
       </div>
 
       {/* Top 3 preview */}
@@ -69,15 +73,27 @@ export function LiveStats({ leaderboardVisible }: { leaderboardVisible: boolean 
           <p className="py-4 text-center text-sm text-slate-500">No scores yet.</p>
         ) : (
           <ul className="space-y-2">
-            {top.map((a, i) => (
-              <li key={a.id} className="flex items-center justify-between gap-2">
-                <span className="flex min-w-0 items-center gap-2">
-                  <span className="text-lg">{medals[i]}</span>
-                  <span className="truncate font-bold text-white">{a.name}</span>
-                </span>
-                <span className="font-display font-black text-lime tabular-nums">{a.score}</span>
-              </li>
-            ))}
+            <AnimatePresence initial={false}>
+              {top.map((a, i) => (
+                <motion.li
+                  key={a.id}
+                  layout
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  className="flex items-center justify-between gap-2"
+                >
+                  <span className="flex min-w-0 items-center gap-2">
+                    <span className="text-lg">{medals[i]}</span>
+                    <span className="truncate font-bold text-white">{a.name}</span>
+                  </span>
+                  <span className="font-display font-black text-lime tabular-nums">
+                    <AnimatedNumber value={a.score} />
+                  </span>
+                </motion.li>
+              ))}
+            </AnimatePresence>
           </ul>
         )}
       </div>
